@@ -7,7 +7,7 @@
 //
 
 import Foundation
-class Task {
+class TaskAttributes {
     
     var name : String
     var categoryName : String

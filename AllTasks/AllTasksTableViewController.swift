@@ -9,10 +9,13 @@
 import UIKit
 
 class AllTasksTableViewController: UITableViewController {
+    var unCompletedTasks = [TaskAttributes]()
+    var completedTasks = [TaskAttributes]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -20,23 +23,57 @@ class AllTasksTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func addNewTask(_ sender: UIBarButtonItem) {
+        let newTaskController  = self.storyboard?.instantiateViewController(withIdentifier: "NewAndEditTask") as! NewAndEditTask
+        
+        
+        
+        
+        self.navigationController?.pushViewController(newTaskController, animated: true)
     }
-
+    
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        
+        switch section {
+        case 0:
+            return unCompletedTasks.count
+        default:
+            return completedTasks.count
+        }
+        
+    }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch section {
+        case 0:
+            return "UnCompletedTasks"
+        default:
+            return "completedTasks"
+        }
     }
 
+    @IBAction func gotoSetting(_ sender: UIBarButtonItem) {
+        
+        let settingController  = self.storyboard?.instantiateViewController(withIdentifier: "Setting") as! Setting
+        
+        
+        //print("hhhheeeeeeeeeeee"+String (detailController.movie.id))
+        
+        
+        //self.navigationController?.pushViewController(detailController, animated: true)
+        
+        //print(self.navigationController)
+        
+        self.navigationController?.pushViewController(settingController, animated: true)
+    }
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
