@@ -11,12 +11,12 @@ import UIKit
 class NewAndEditTask: UIViewController {
     
     var categories = [Category]()
-    
+    private var datepicker = UIDatePicker()
     @IBOutlet weak var taskName: UITextField!
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var categoryTableView: UITableView!
     @IBOutlet weak var completionDate: UITextField!
-    
+    var tapGesture : UITapGestureRecognizer?
     
     
     
@@ -27,6 +27,15 @@ class NewAndEditTask: UIViewController {
         categories = CoreDataFunctions.getAllCategories(newAndEditTask: self)
         print(categories.count)
         categoryTableView.isHidden = true
+        
+        datepicker.datePickerMode = .date
+        
+        datepicker.addTarget(self, action: #selector(NewAndEditTask.dateChanged(datePicker:)), for: .valueChanged)
+         tapGesture = UITapGestureRecognizer(target: self, action: #selector(NewAndEditTask.viewTapped(gestureRecognizer:)))
+        tapGesture?.delegate = self
+        view.addGestureRecognizer(tapGesture!)
+        completionDate.inputView = datepicker
+        
         // Do any additional setup after loading the view.
         
         
@@ -42,7 +51,10 @@ class NewAndEditTask: UIViewController {
         view.endEditing(true)
     }
     @objc func dateChanged(datePicker : UIDatePicker){
-        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        completionDate.text = dateFormatter.string(from: datePicker.date)
+        view.endEditing(true)
         
     }
 
@@ -90,5 +102,14 @@ extension NewAndEditTask : UITableViewDelegate , UITableViewDataSource{
     
     
     
+}
+extension NewAndEditTask : UIGestureRecognizerDelegate{
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if touch.view?.isDescendant(of: self.categoryTableView) == true {
+            return false
+        }
+        return true
+    }
 }
 
