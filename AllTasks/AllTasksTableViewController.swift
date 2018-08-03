@@ -14,7 +14,15 @@ class AllTasksTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        //CoreDataFunctions.resetAllRecords()
+        let allTasks = CoreDataFunctions.getAllTasks()
+        print(allTasks.count)
+        unCompletedTasks = allTasks.filter {
+            $0.isCompleted == false
+        }
+        completedTasks = allTasks.filter{
+            $0.isCompleted == true
+        }
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -27,7 +35,7 @@ class AllTasksTableViewController: UITableViewController {
     @IBAction func addNewTask(_ sender: UIBarButtonItem) {
         let newTaskController  = self.storyboard?.instantiateViewController(withIdentifier: "NewAndEditTask") as! NewAndEditTask
         
-        
+        newTaskController.isNewTask = true
         
         
         self.navigationController?.pushViewController(newTaskController, animated: true)
@@ -56,7 +64,7 @@ class AllTasksTableViewController: UITableViewController {
         case 0:
             return "UnCompletedTasks"
         default:
-            return "completedTasks"
+            return "CompletedTasks"
         }
     }
 
@@ -74,15 +82,51 @@ class AllTasksTableViewController: UITableViewController {
         
         self.navigationController?.pushViewController(settingController, animated: true)
     }
-    /*
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as! TaskCell
 
         // Configure the cell...
+        switch indexPath.section {
+        case 0:
+            cell.colorName.text = unCompletedTasks[indexPath.row].categoryColor
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            
+            
+            cell.completionDate.text = dateFormatter.string(from: unCompletedTasks[indexPath.row].completionDate)
+            cell.taskName.text = unCompletedTasks[indexPath.row].name
+        default:
+            cell.colorName.text = completedTasks[indexPath.row].categoryColor
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            
+            
+            cell.completionDate.text = dateFormatter.string(from: completedTasks[indexPath.row].completionDate)
+            cell.taskName.text = completedTasks[indexPath.row].name
+        }
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let newTaskController  = self.storyboard?.instantiateViewController(withIdentifier: "NewAndEditTask") as! NewAndEditTask
+        
+        newTaskController.isNewTask = false
+        switch indexPath.section {
+        case 0:
+            newTaskController.oldTaskName = unCompletedTasks[indexPath.row].name
+            newTaskController.oldTask = unCompletedTasks[indexPath.row]
+        default:
+            newTaskController.oldTaskName = completedTasks[indexPath.row].name
+            newTaskController.oldTask = completedTasks[indexPath.row]
+            newTaskController.isCompleted = true
+        }
+        
+        
+        self.navigationController?.pushViewController(newTaskController, animated: true)
+    }
+ 
 
     /*
     // Override to support conditional editing of the table view.

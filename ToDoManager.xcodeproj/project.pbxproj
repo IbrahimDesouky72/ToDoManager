@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C41C13BB2114A6FF00E42B0E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41C13BA2114A6FF00E42B0E /* Utilities.swift */; };
 		C41E1FCB21111443000C1817 /* AllTasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E1FCA21111443000C1817 /* AllTasksTableViewController.swift */; };
 		C41E1FCE21111485000C1817 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E1FCD21111485000C1817 /* Task.swift */; };
 		C41E1FD0211129DD000C1817 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C41E1FCF211129DD000C1817 /* TaskCell.swift */; };
@@ -40,6 +41,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C41C13BA2114A6FF00E42B0E /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C41E1FCA21111443000C1817 /* AllTasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTasksTableViewController.swift; sourceTree = "<group>"; };
 		C41E1FCD21111485000C1817 /* Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		C41E1FCF211129DD000C1817 /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
@@ -86,6 +88,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C41C13B92114A6B400E42B0E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				C41C13BA2114A6FF00E42B0E /* Utilities.swift */,
+			);
+			name = Utilities;
+			path = Ut;
+			sourceTree = "<group>";
+		};
 		C41E1FC7211113AC000C1817 /* AllTasks */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,6 +141,7 @@
 		C4A188BA2110093B008940AA = {
 			isa = PBXGroup;
 			children = (
+				C41C13B92114A6B400E42B0E /* Utilities */,
 				C424D66121137FC3001E7A38 /* CoreDataFunctions */,
 				C424D65E211378F9001E7A38 /* NewAndEditTask */,
 				C461AEE52112AC5A00BE26CA /* SettingViewController */,
@@ -320,6 +332,7 @@
 				C461AEE72112ACAD00BE26CA /* Setting.swift in Sources */,
 				C41E1FCB21111443000C1817 /* AllTasksTableViewController.swift in Sources */,
 				C4A188CF2110093C008940AA /* ToDoManager.xcdatamodeld in Sources */,
+				C41C13BB2114A6FF00E42B0E /* Utilities.swift in Sources */,
 				C424D66321137FFF001E7A38 /* CoreDataFunctions.swift in Sources */,
 				C41E1FD0211129DD000C1817 /* TaskCell.swift in Sources */,
 			);

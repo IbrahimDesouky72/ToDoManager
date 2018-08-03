@@ -10,15 +10,26 @@ import UIKit
 
 class NewAndEditTask: UIViewController {
     
+    @IBOutlet weak var errorLabel: UILabel!
     var categories = [Category]()
     private var datepicker = UIDatePicker()
+    var selectedCategory = -1
+    var isNewTask = true
+    var isCategorySelected = false
+    var isDateSelected = false
+    var oldTaskName = ""
+    var isCompleted = false
+    var oldTask = TaskAttributes()
     @IBOutlet weak var taskName: UITextField!
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var categoryTableView: UITableView!
     @IBOutlet weak var completionDate: UITextField!
     var tapGesture : UITapGestureRecognizer?
     
+    @IBOutlet weak var editButton: UIButton!
+    @IBOutlet weak var deleteButton: UIButton!
     
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +46,30 @@ class NewAndEditTask: UIViewController {
         tapGesture?.delegate = self
         view.addGestureRecognizer(tapGesture!)
         completionDate.inputView = datepicker
+        if isNewTask {
+            deleteButton.isHidden = true
+            editButton.isHidden = true
+        }else {
+            self.navigationItem.rightBarButtonItem = nil
+            taskName.text = oldTask.name
+            categoryButton.setTitle(oldTask.categoryName + "," + oldTask.categoryColor, for: .normal)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            completionDate.text = dateFormatter.string(from: oldTask.completionDate)
+        }
+        if isCompleted {
+            deleteButton.isHidden = true
+            editButton.isHidden = true
+            //self.navigationItem.rightBarButtonItem = nil
+            
+            self.navigationItem.rightBarButtonItem = nil
+            taskName.text = oldTask.name
+            categoryButton.setTitle(oldTask.categoryName + "," + oldTask.categoryColor, for: .normal)
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM/dd/yyyy"
+            completionDate.text = dateFormatter.string(from: oldTask.completionDate)
+        }
+        errorLabel.isHidden = true
         
         // Do any additional setup after loading the view.
         
@@ -55,6 +90,7 @@ class NewAndEditTask: UIViewController {
         dateFormatter.dateFormat = "MM/dd/yyyy"
         completionDate.text = dateFormatter.string(from: datePicker.date)
         view.endEditing(true)
+        isDateSelected = true
         
     }
 
@@ -65,8 +101,65 @@ class NewAndEditTask: UIViewController {
     }
     
     
-   
+    @IBAction func editButtonPressed(_ sender: UIButton) {
+        if self.taskName.text != "" {
+            print( CoreDataFunctions.deleteRecord(taskName: oldTaskName, entityName: Utilities.task))
+            
+        }
+        
+    }
     
+    @IBAction func deleteButtonPressed(_ sender: UIButton) {
+        if self.taskName.text != "" {
+           print( CoreDataFunctions.deleteRecord(taskName: oldTaskName, entityName: Utilities.task))
+        }
+    }
+    
+    
+    @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        if self.taskName.text != "" {
+            if isCategorySelected {
+                if isDateSelected {
+                    let myTask = TaskAttributes()
+                    myTask.name = taskName.text!
+                    myTask.categoryColor = categories[selectedCategory].categoryColor!
+                    myTask.categoryName = categories[selectedCategory].categoryName!
+                    myTask.isCompleted = false
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "MM/dd/yyyy"
+                    
+                    myTask.completionDate = dateFormatter.date(from: completionDate.text!)!
+                    if  CoreDataFunctions.addTaskToCoreData(task: myTask) == true{
+                        taskName.text = ""
+                        categoryButton.setTitle("Pick a Category", for: .normal)
+                        isCategorySelected = false
+                        completionDate.text = ""
+                        isDateSelected = false
+                        errorLabel.isHidden = true
+                    }else {
+                        errorLabel.isHidden = false
+                        errorLabel.text = "Task Already Exist"
+                        return
+                    }
+                }else {
+                    errorLabel.isHidden = false
+                    errorLabel.text = "Please , select Completion Date"
+                    return
+                    
+                }
+            }else {
+                errorLabel.isHidden = false
+                errorLabel.text = "Please , select Category"
+                return
+                
+            }
+            
+        }else {
+            errorLabel.isHidden = false
+            errorLabel.text = "Please , Enter taskName"
+            return
+        }
+    }
     
     
   
@@ -97,6 +190,9 @@ extension NewAndEditTask : UITableViewDelegate , UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         categoryButton.setTitle(categories[indexPath.row].categoryName! + "," + categories[indexPath.row].categoryColor!, for: .normal)
         self.categoryTableView.isHidden = !self.categoryTableView.isHidden
+        isCategorySelected = true
+        selectedCategory = indexPath.row
+        
     }
     
     

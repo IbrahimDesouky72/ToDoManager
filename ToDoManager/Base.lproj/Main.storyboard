@@ -221,26 +221,76 @@
                                     </textField>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JuG-u1-r9f">
+                                <rect key="frame" x="8" y="497" width="367" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="elr-Nr-0qC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="gsd-XM-GZB">
+                                <rect key="frame" x="8" y="453" width="367" height="36"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Roj-7H-3uo">
+                                        <rect key="frame" x="0.0" y="0.0" width="183.5" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Edit">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="editButtonPressed:" destination="5Gf-kw-blP" eventType="touchUpInside" id="Ssx-lK-4Lf"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="niQ-Jt-cwW">
+                                        <rect key="frame" x="183.5" y="0.0" width="183.5" height="36"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="Delete">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="deleteButtonPressed:" destination="5Gf-kw-blP" eventType="touchUpInside" id="odY-cW-2VZ"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.57637232540000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Dw3-Gs-Oun" firstAttribute="leading" secondItem="m1j-iT-txA" secondAttribute="leading" constant="8" id="4G3-4t-t5g"/>
+                            <constraint firstItem="gsd-XM-GZB" firstAttribute="leading" secondItem="m1j-iT-txA" secondAttribute="leading" constant="8" id="9Dc-PX-nl3"/>
                             <constraint firstItem="bzg-S8-ARw" firstAttribute="leading" secondItem="m1j-iT-txA" secondAttribute="leading" constant="8" id="G9w-sS-9Bl"/>
                             <constraint firstItem="Dw3-Gs-Oun" firstAttribute="top" secondItem="yjR-Ve-Jfv" secondAttribute="bottom" constant="8" id="HjU-zm-C2K"/>
                             <constraint firstItem="yjR-Ve-Jfv" firstAttribute="top" secondItem="bzg-S8-ARw" secondAttribute="bottom" constant="8" id="KKz-Ha-CrT"/>
+                            <constraint firstItem="JuG-u1-r9f" firstAttribute="leading" secondItem="m1j-iT-txA" secondAttribute="leading" constant="8" id="PKj-wm-jZS"/>
                             <constraint firstItem="m1j-iT-txA" firstAttribute="trailing" secondItem="bzg-S8-ARw" secondAttribute="trailing" id="Tms-mP-6YV"/>
+                            <constraint firstItem="JuG-u1-r9f" firstAttribute="top" secondItem="gsd-XM-GZB" secondAttribute="bottom" constant="8" id="VLf-kB-HFw"/>
                             <constraint firstItem="yjR-Ve-Jfv" firstAttribute="trailing" secondItem="m1j-iT-txA" secondAttribute="trailing" id="Vj4-h8-CId"/>
                             <constraint firstItem="yjR-Ve-Jfv" firstAttribute="leading" secondItem="m1j-iT-txA" secondAttribute="leading" constant="8" id="fAa-WL-Msk"/>
+                            <constraint firstItem="JuG-u1-r9f" firstAttribute="trailing" secondItem="m1j-iT-txA" secondAttribute="trailing" id="ibZ-vy-lhE"/>
                             <constraint firstItem="bzg-S8-ARw" firstAttribute="top" secondItem="m1j-iT-txA" secondAttribute="top" constant="10" id="kj2-yR-qCV"/>
                             <constraint firstItem="m1j-iT-txA" firstAttribute="trailing" secondItem="Dw3-Gs-Oun" secondAttribute="trailing" id="ooc-Km-FPl"/>
+                            <constraint firstItem="m1j-iT-txA" firstAttribute="trailing" secondItem="gsd-XM-GZB" secondAttribute="trailing" id="sNC-ly-Xl0"/>
+                            <constraint firstItem="gsd-XM-GZB" firstAttribute="top" secondItem="Dw3-Gs-Oun" secondAttribute="bottom" constant="8" id="xpd-Ac-aaK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="m1j-iT-txA"/>
                     </view>
-                    <navigationItem key="navigationItem" title="EditAndAddNewTask" id="HDW-b1-Ww5"/>
+                    <navigationItem key="navigationItem" title="EditAndAddNewTask" id="HDW-b1-Ww5">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="skw-90-4z9">
+                            <connections>
+                                <action selector="saveButtonPressed:" destination="5Gf-kw-blP" id="uda-YY-dIC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="categoryButton" destination="yH3-yb-j7k" id="P6y-IJ-mfP"/>
                         <outlet property="categoryTableView" destination="VZB-48-ClU" id="nTc-Ft-6iB"/>
                         <outlet property="completionDate" destination="8IG-9V-MYA" id="YRN-QE-au9"/>
+                        <outlet property="deleteButton" destination="niQ-Jt-cwW" id="7Qw-53-4Mc"/>
+                        <outlet property="editButton" destination="Roj-7H-3uo" id="XhE-xg-nCa"/>
+                        <outlet property="errorLabel" destination="JuG-u1-r9f" id="pAY-Wo-lrJ"/>
+                        <outlet property="saveButton" destination="skw-90-4z9" id="K3J-nF-gtJ"/>
                         <outlet property="taskName" destination="UfO-Fy-IcX" id="BoZ-eq-tyC"/>
                     </connections>
                 </viewController>

@@ -13,11 +13,13 @@ class TaskAttributes {
     var categoryName : String
     var categoryColor : String
     var completionDate : Date
+    var isCompleted : Bool
     
     init() {
         name = ""
         categoryName = ""
         categoryColor = ""
         completionDate = Date()
+        isCompleted = false
     }
 }

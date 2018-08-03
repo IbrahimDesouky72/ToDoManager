@@ -38,12 +38,13 @@ class CoreDataFunctions{
     {
         
         let context = ( UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Category")
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
         do
         {
             try context.execute(deleteRequest)
             try context.save()
+            print("deleted")
             
         }
         catch
@@ -51,8 +52,43 @@ class CoreDataFunctions{
             print ("There was an error")
         }
     }
+    class func getAllTasks() ->[TaskAttributes]{
+        
+        let appDelegete = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appDelegete.persistentContainer.viewContext
+        
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Task")
+        var tasks : [TaskAttributes] = [TaskAttributes]()
+        
+        do {
+            var coreDataTasks : [Task] = [Task]()
+            coreDataTasks = try managedContext.fetch(fetchRequest) as! [Task]
+            print("fetch +"+String(coreDataTasks.count))
+            
+            
+            
+            for task in coreDataTasks {
+                //print(movie.originalTitle)
+                print(task.name!)
+                let myTask : TaskAttributes = TaskAttributes()
+                myTask.name = task.name!
+                myTask.categoryColor = task.categoryColor!
+                myTask.categoryName = task.categoryName!
+                myTask.completionDate = task.completionDate!
+                myTask.isCompleted = task.completed
+                
+                tasks.append(myTask)
+            }
+            
+        }catch{
+            print("error")
+        }
+        return tasks
+        
+    }
     
-    class func addTaskToCoreData(task :TaskAttributes ){
+    class func addTaskToCoreData(task :TaskAttributes ) -> Bool{
         
         let appDelegete = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegete.persistentContainer.viewContext
@@ -60,7 +96,7 @@ class CoreDataFunctions{
         let entity = NSEntityDescription.entity(forEntityName: "Task", in: managedContext)
         
         
-        
+        var result = false
         
         let coreTask = NSManagedObject(entity: entity!, insertInto: managedContext)
         
@@ -71,9 +107,11 @@ class CoreDataFunctions{
             coreTask.setValue(task.categoryColor, forKey: "categoryColor")
             coreTask.setValue(task.categoryName, forKey: "categoryName")
             coreTask.setValue(task.completionDate, forKey: "completionDate")
+            coreTask.setValue(task.isCompleted, forKey: "completed")
             do {
                 try managedContext.save()
                 print("heree99")
+                result = true
                
             }catch let error as NSError{
                 print(error)
@@ -81,9 +119,10 @@ class CoreDataFunctions{
             }
         }else {
             print("exist")
+            result = false
         }
-        
-        
+        print(result)
+        return result
     }
     
     class func fetchRecord(name: String , entityName : String , columnName : String) -> Bool {
@@ -108,6 +147,29 @@ class CoreDataFunctions{
             print("error")
         }
         return result
+    }
+    
+    class func deleteRecord(taskName : String , entityName : String) -> Bool {
+        let context = ( UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        
+        //let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Movie")
+        do {
+            let result = try context.fetch(deleteFetch)
+            for task in result as! [Task] {
+                if task.name == taskName {
+                    context.delete(task)
+                    try context.save()
+                    
+                    return true
+                }
+            }
+            try context.save()
+        } catch {
+            print("Failed")
+        }
+        return false
+        
     }
     
 }
