@@ -15,6 +15,19 @@ class AllTasksTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         //CoreDataFunctions.resetAllRecords()
+       
+        
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        reloadTableView()
+    }
+    
+    func reloadTableView(){
         let allTasks = CoreDataFunctions.getAllTasks()
         print(allTasks.count)
         unCompletedTasks = allTasks.filter {
@@ -23,12 +36,7 @@ class AllTasksTableViewController: UITableViewController {
         completedTasks = allTasks.filter{
             $0.isCompleted == true
         }
-        
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        tableView.reloadData()
     }
 
     
@@ -136,17 +144,41 @@ class AllTasksTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            //tableView.deleteRows(at: [indexPath], with: .fade)
+            print("hhhhhh")
+            switch indexPath.section{
+            case 0 :
+                unCompletedTasks.remove(at: indexPath.row)
+               print (CoreDataFunctions.deleteRecord(taskName: unCompletedTasks[indexPath.row].name, entityName: Utilities.task))
+            default:
+                completedTasks.remove(at: indexPath.row)
+                print (CoreDataFunctions.deleteRecord(taskName: completedTasks[indexPath.row].name, entityName: Utilities.task))
+            }
+            tableView.reloadData()
+            
+        }
     }
-    */
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        if indexPath.section == 0{
+        let completed = UIContextualAction(style: .normal, title: "Done") { (action, view, nil) in
+            print("done")
+            let completedTask = self.unCompletedTasks[indexPath.row]
+            completedTask.isCompleted = true
+            CoreDataFunctions.deleteRecord(taskName: completedTask.name, entityName: Utilities.task)
+            CoreDataFunctions.addTaskToCoreData(task: completedTask)
+            self.reloadTableView()
+            
+        }
+            return UISwipeActionsConfiguration(actions: [completed])
+        }
+        return nil
+    }
+    
 
     /*
     // Override to support rearranging the table view.

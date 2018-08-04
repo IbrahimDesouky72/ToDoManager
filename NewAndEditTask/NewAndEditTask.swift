@@ -56,6 +56,9 @@ class NewAndEditTask: UIViewController {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/dd/yyyy"
             completionDate.text = dateFormatter.string(from: oldTask.completionDate)
+            isCategorySelected = true
+            isDateSelected = true
+            
         }
         if isCompleted {
             deleteButton.isHidden = true
@@ -102,11 +105,35 @@ class NewAndEditTask: UIViewController {
     
     
     @IBAction func editButtonPressed(_ sender: UIButton) {
-        if self.taskName.text != "" {
-            print( CoreDataFunctions.deleteRecord(taskName: oldTaskName, entityName: Utilities.task))
-            
+      if self.taskName.text != "" {
+//            if CoreDataFunctions.deleteRecord(taskName: oldTaskName, entityName: Utilities.task) == true{
+//                print("inside edit")
+//                addToCoreData()
+//            }
+            let editedTask = TaskAttributes()
+            editedTask.name = taskName.text!
+            let category = getCategory()
+            editedTask.categoryName = category[0]
+            editedTask.categoryColor = category[1]
+            editedTask.isCompleted = oldTask.isCompleted
+            editedTask.completionDate = convertStringToDate(stringDate: completionDate.text!)
+        if CoreDataFunctions.editTaskRecord(task: editedTask, oldName: oldTaskName){
+            oldTaskName = editedTask.name
         }
         
+        }
+        
+        
+    }
+    func convertStringToDate(stringDate : String) -> Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        
+        return dateFormatter.date(from: stringDate)!
+    }
+    
+    func getCategory() -> [String] {
+        return (categoryButton.titleLabel?.text?.components(separatedBy: ","))!
     }
     
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
@@ -117,13 +144,18 @@ class NewAndEditTask: UIViewController {
     
     
     @IBAction func saveButtonPressed(_ sender: UIBarButtonItem) {
+        addToCoreData()
+        
+    }
+    func addToCoreData()  {
         if self.taskName.text != "" {
             if isCategorySelected {
                 if isDateSelected {
                     let myTask = TaskAttributes()
                     myTask.name = taskName.text!
-                    myTask.categoryColor = categories[selectedCategory].categoryColor!
-                    myTask.categoryName = categories[selectedCategory].categoryName!
+                    var categoryVariables = categoryButton.titleLabel?.text?.components(separatedBy: ",")
+                    myTask.categoryColor = categoryVariables![1]
+                    myTask.categoryName = categoryVariables![0]
                     myTask.isCompleted = false
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "MM/dd/yyyy"

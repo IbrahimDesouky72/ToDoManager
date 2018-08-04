@@ -149,6 +149,37 @@ class CoreDataFunctions{
         return result
     }
     
+    class func editTaskRecord(task : TaskAttributes , oldName : String) -> Bool{
+        let appDelegete = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appDelegete.persistentContainer.viewContext
+        
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: Utilities.task)
+        let myPredicate = NSPredicate(format: "name = %@",oldName)
+        fetchRequest.predicate = myPredicate
+        var result : Bool = false
+        
+        do {
+            
+            let tasks = try managedContext.fetch(fetchRequest)
+            if tasks.count > 0 {
+                result = true
+                for coreDateTask in tasks as! [Task] {
+                    coreDateTask.setValue(task.name, forKey: "name")
+                    coreDateTask.setValue(task.categoryColor, forKey: "categoryColor")
+                    coreDateTask.categoryName = task.categoryName
+                    coreDateTask.completed = task.isCompleted
+                    coreDateTask.completionDate = task.completionDate
+                }
+                
+            }
+            
+        }catch{
+            print("error")
+        }
+        return result
+    }
+    
     class func deleteRecord(taskName : String , entityName : String) -> Bool {
         let context = ( UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)

@@ -18,7 +18,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="FNv-jY-Cn8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taskCell" rowHeight="132" id="oli-jL-p1a" customClass="TaskCell" customModule="ToDoManager" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="132"/>
@@ -83,6 +83,7 @@
                                         <constraint firstItem="eMh-q8-9Id" firstAttribute="top" secondItem="0r1-6l-FoN" secondAttribute="bottom" constant="8" id="zrp-kP-9oD"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="1" green="0.80000000000000004" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="colorName" destination="kQ9-I7-YxF" id="TKt-A9-vzz"/>
                                     <outlet property="completionDate" destination="Tu1-0f-sIo" id="ybn-Wx-RIz"/>
