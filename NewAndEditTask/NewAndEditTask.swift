@@ -37,6 +37,9 @@ class NewAndEditTask: UIViewController {
        // CoreDataFunctions.resetAllRecords()
         categories = CoreDataFunctions.getAllCategories(newAndEditTask: self)
         print(categories.count)
+        for cat in categories {
+           print( cat.categoryName! + "," + cat.categoryColor! )
+        }
         categoryTableView.isHidden = true
         
         datepicker.datePickerMode = .date
@@ -61,7 +64,7 @@ class NewAndEditTask: UIViewController {
             
         }
         if isCompleted {
-            deleteButton.isHidden = true
+            //deleteButton.isHidden = true
             editButton.isHidden = true
             //self.navigationItem.rightBarButtonItem = nil
             
@@ -138,8 +141,19 @@ class NewAndEditTask: UIViewController {
     
     @IBAction func deleteButtonPressed(_ sender: UIButton) {
         if self.taskName.text != "" {
-           print( CoreDataFunctions.deleteRecord(taskName: oldTaskName, entityName: Utilities.task))
+            if CoreDataFunctions.deleteRecord(taskName: oldTaskName, entityName: Utilities.task){
+                clearData()
+                
+            }
         }
+    }
+    func clearData()  {
+        taskName.text = ""
+        categoryButton.setTitle("Pick a Category", for: .normal)
+        isCategorySelected = false
+        completionDate.text = ""
+        isDateSelected = false
+        errorLabel.isHidden = true
     }
     
     
@@ -162,12 +176,7 @@ class NewAndEditTask: UIViewController {
                     
                     myTask.completionDate = dateFormatter.date(from: completionDate.text!)!
                     if  CoreDataFunctions.addTaskToCoreData(task: myTask) == true{
-                        taskName.text = ""
-                        categoryButton.setTitle("Pick a Category", for: .normal)
-                        isCategorySelected = false
-                        completionDate.text = ""
-                        isDateSelected = false
-                        errorLabel.isHidden = true
+                       clearData()
                     }else {
                         errorLabel.isHidden = false
                         errorLabel.text = "Task Already Exist"
@@ -214,7 +223,7 @@ extension NewAndEditTask : UITableViewDelegate , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-        
+       // print(categories[indexPath.row].categoryName! + "," + categories[indexPath.row].categoryColor!)
         cell.textLabel?.text = categories[indexPath.row].categoryName! + "," + categories[indexPath.row].categoryColor!
         
         return cell

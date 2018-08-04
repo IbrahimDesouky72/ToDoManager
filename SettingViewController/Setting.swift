@@ -13,13 +13,14 @@ class Setting: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var buttonLabel: UIButton!
     @IBOutlet weak var categoryName: UITextField!
     var isColorSelected = false
     var colors = ["red","green","blue","gray","lightGray","black","white","yellow","brown","clear","magenta","purple","orange"]
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        errorLabel.isHidden = true
         // Do any additional setup after loading the view.
     }
 
@@ -35,40 +36,42 @@ class Setting: UIViewController {
     
     @IBAction func saveToCoreDate(_ sender: UIBarButtonItem) {
         
-        if self.categoryName.text != "" && isColorSelected == true {
-            print("hereee4")
-        
-        let appDelegete = UIApplication.shared.delegate as! AppDelegate
-        let managedContext = appDelegete.persistentContainer.viewContext
-        
-        let entity = NSEntityDescription.entity(forEntityName: "Category", in: managedContext)
-        
-        
-        
-        
-        let category = NSManagedObject(entity: entity!, insertInto: managedContext)
-        
-        
-        
-            if(self.fetchRecord(name: categoryName.text!)) != true {
-                category.setValue(categoryName.text, forKey: "categoryName")
-                category.setValue(buttonLabel.titleLabel?.text, forKey: "categoryColor")
-                do {
-                    try managedContext.save()
-                    print("heree99")
-                    print (self.fetchRecord(name: self.categoryName.text!))
-                }catch let error as NSError{
-                    print(error)
+        if self.categoryName.text != "" {
+            
+            if isColorSelected == true {
+            let newCategory = CategoryAttributes()
+                newCategory.categoryName = categoryName.text!
+                newCategory.categoryColor = (buttonLabel.titleLabel?.text)!
+                if CoreDataFunctions.addCategoryToCoreData(newCategory: newCategory){
+                    clearData()
                     
+                }else{
+                    print("exist")
+                    errorLabel.isHidden = false
+                    errorLabel.text = "Category is Exist"
                 }
-            }else {
-                print("exist")
-            }
+        
+        
             
         
+            }else{
+                
+                errorLabel.isHidden = false
+                errorLabel.text = "select color"
+            }
+        }else{
+           
+            errorLabel.isHidden = false
+            errorLabel.text = "Enter Category Name"
         }
     }
     
+    func clearData()  {
+        categoryName.text = ""
+        buttonLabel.setTitle("Select Color", for: .normal)
+        isColorSelected = false
+        errorLabel.isHidden = true
+    }
     
     func fetchRecord(name: String) -> Bool {
         let appDelegete = UIApplication.shared.delegate as! AppDelegate

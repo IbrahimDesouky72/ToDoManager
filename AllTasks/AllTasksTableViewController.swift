@@ -14,7 +14,7 @@ class AllTasksTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //CoreDataFunctions.resetAllRecords()
+       // CoreDataFunctions.resetAllRecords()
        
         
         // Uncomment the following line to preserve selection between presentations
@@ -153,11 +153,14 @@ class AllTasksTableViewController: UITableViewController {
             print("hhhhhh")
             switch indexPath.section{
             case 0 :
+                let name = unCompletedTasks[indexPath.row].name
                 unCompletedTasks.remove(at: indexPath.row)
-               print (CoreDataFunctions.deleteRecord(taskName: unCompletedTasks[indexPath.row].name, entityName: Utilities.task))
+               print (CoreDataFunctions.deleteRecord(taskName: name, entityName: Utilities.task))
             default:
+                let name = completedTasks[indexPath.row].name
                 completedTasks.remove(at: indexPath.row)
-                print (CoreDataFunctions.deleteRecord(taskName: completedTasks[indexPath.row].name, entityName: Utilities.task))
+        
+                print (CoreDataFunctions.deleteRecord(taskName: name, entityName: Utilities.task))
             }
             tableView.reloadData()
             

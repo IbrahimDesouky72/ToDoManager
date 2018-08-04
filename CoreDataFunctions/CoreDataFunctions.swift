@@ -38,7 +38,7 @@ class CoreDataFunctions{
     {
         
         let context = ( UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
-        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Task")
+        let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: "Category")
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: deleteFetch)
         do
         {
@@ -141,6 +141,63 @@ class CoreDataFunctions{
             if m.count > 0 {
                 result = true
                 
+            }
+            
+        }catch{
+            print("error")
+        }
+        return result
+    }
+    
+    class func addCategoryToCoreData(newCategory : CategoryAttributes) -> Bool {
+        var result = false
+        let appDelegete = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appDelegete.persistentContainer.viewContext
+        
+        let entity = NSEntityDescription.entity(forEntityName: "Category", in: managedContext)
+        
+        
+        
+        
+        let category = NSManagedObject(entity: entity!, insertInto: managedContext)
+        
+        
+        
+        if(self.fetchCategoryRecord(name: newCategory.categoryName)) != true {
+            print(newCategory.categoryName + "," + newCategory.categoryColor)
+            category.setValue(newCategory.categoryName, forKey: "categoryName")
+            category.setValue(newCategory.categoryColor, forKey: "categoryColor")
+            do {
+                try managedContext.save()
+                result = true
+            }catch let error as NSError{
+                print(error)
+                
+            }
+        }else {
+            print("exist")
+            result = false
+        }
+        
+        return result
+    }
+    
+    class func fetchCategoryRecord(name: String) -> Bool {
+        let appDelegete = UIApplication.shared.delegate as! AppDelegate
+        let managedContext = appDelegete.persistentContainer.viewContext
+        
+        
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Category")
+        let myPredicate = NSPredicate(format: "categoryName = %@",name)
+        fetchRequest.predicate = myPredicate
+        var result : Bool = false
+        
+        do {
+            var m = [Category]()
+            m = try managedContext.fetch(fetchRequest) as! [Category]
+            if m.count > 0 {
+                result = true
+                print(m[0].categoryColor ?? "hello")
             }
             
         }catch{
