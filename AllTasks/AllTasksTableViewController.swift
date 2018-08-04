@@ -29,7 +29,7 @@ class AllTasksTableViewController: UITableViewController {
     
     func reloadTableView(){
         let allTasks = CoreDataFunctions.getAllTasks()
-        print(allTasks.count)
+        
         unCompletedTasks = allTasks.filter {
             $0.isCompleted == false
         }
@@ -81,12 +81,7 @@ class AllTasksTableViewController: UITableViewController {
         let settingController  = self.storyboard?.instantiateViewController(withIdentifier: "Setting") as! Setting
         
         
-        //print("hhhheeeeeeeeeeee"+String (detailController.movie.id))
         
-        
-        //self.navigationController?.pushViewController(detailController, animated: true)
-        
-        //print(self.navigationController)
         
         self.navigationController?.pushViewController(settingController, animated: true)
     }
@@ -150,7 +145,7 @@ class AllTasksTableViewController: UITableViewController {
         if editingStyle == .delete {
             // Delete the row from the data source
             //tableView.deleteRows(at: [indexPath], with: .fade)
-            print("hhhhhh")
+            
             switch indexPath.section{
             case 0 :
                 let name = unCompletedTasks[indexPath.row].name
@@ -169,13 +164,13 @@ class AllTasksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         if indexPath.section == 0{
         let completed = UIContextualAction(style: .normal, title: "Done") { (action, view, nil) in
-            print("done")
+            
             let completedTask = self.unCompletedTasks[indexPath.row]
             completedTask.isCompleted = true
-            CoreDataFunctions.deleteRecord(taskName: completedTask.name, entityName: Utilities.task)
-            CoreDataFunctions.addTaskToCoreData(task: completedTask)
-            self.reloadTableView()
-            
+            if CoreDataFunctions.deleteRecord(taskName: completedTask.name, entityName: Utilities.task) &&
+                CoreDataFunctions.addTaskToCoreData(task: completedTask) {
+                self.reloadTableView()
+            }
         }
             return UISwipeActionsConfiguration(actions: [completed])
         }

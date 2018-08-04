@@ -36,10 +36,7 @@ class NewAndEditTask: UIViewController {
         
        // CoreDataFunctions.resetAllRecords()
         categories = CoreDataFunctions.getAllCategories(newAndEditTask: self)
-        print(categories.count)
-        for cat in categories {
-           print( cat.categoryName! + "," + cat.categoryColor! )
-        }
+        
         categoryTableView.isHidden = true
         
         datepicker.datePickerMode = .date
@@ -109,10 +106,7 @@ class NewAndEditTask: UIViewController {
     
     @IBAction func editButtonPressed(_ sender: UIButton) {
       if self.taskName.text != "" {
-//            if CoreDataFunctions.deleteRecord(taskName: oldTaskName, entityName: Utilities.task) == true{
-//                print("inside edit")
-//                addToCoreData()
-//            }
+
             let editedTask = TaskAttributes()
             editedTask.name = taskName.text!
             let category = getCategory()
@@ -223,7 +217,6 @@ extension NewAndEditTask : UITableViewDelegate , UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
-       // print(categories[indexPath.row].categoryName! + "," + categories[indexPath.row].categoryColor!)
         cell.textLabel?.text = categories[indexPath.row].categoryName! + "," + categories[indexPath.row].categoryColor!
         
         return cell

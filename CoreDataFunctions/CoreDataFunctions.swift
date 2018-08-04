@@ -24,7 +24,7 @@ class CoreDataFunctions{
             categories = try managedContext.fetch(fetchRequest) as! [Category]
             if categories.count > 0 {
                 newAndEditTask.updateUI(categories: categories)
-                print(categories.count)
+                
             }
             
         }catch{
@@ -44,7 +44,7 @@ class CoreDataFunctions{
         {
             try context.execute(deleteRequest)
             try context.save()
-            print("deleted")
+            
             
         }
         catch
@@ -64,13 +64,10 @@ class CoreDataFunctions{
         do {
             var coreDataTasks : [Task] = [Task]()
             coreDataTasks = try managedContext.fetch(fetchRequest) as! [Task]
-            print("fetch +"+String(coreDataTasks.count))
-            
-            
-            
+           
             for task in coreDataTasks {
-                //print(movie.originalTitle)
-                print(task.name!)
+                
+                
                 let myTask : TaskAttributes = TaskAttributes()
                 myTask.name = task.name!
                 myTask.categoryColor = task.categoryColor!
@@ -110,7 +107,6 @@ class CoreDataFunctions{
             coreTask.setValue(task.isCompleted, forKey: "completed")
             do {
                 try managedContext.save()
-                print("heree99")
                 result = true
                
             }catch let error as NSError{
@@ -118,10 +114,10 @@ class CoreDataFunctions{
                 
             }
         }else {
-            print("exist")
+            
             result = false
         }
-        print(result)
+        
         return result
     }
     
@@ -175,7 +171,7 @@ class CoreDataFunctions{
                 
             }
         }else {
-            print("exist")
+            
             result = false
         }
         
@@ -197,7 +193,7 @@ class CoreDataFunctions{
             m = try managedContext.fetch(fetchRequest) as! [Category]
             if m.count > 0 {
                 result = true
-                print(m[0].categoryColor ?? "hello")
+                
             }
             
         }catch{
@@ -241,7 +237,6 @@ class CoreDataFunctions{
         let context = ( UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
         let deleteFetch = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         
-        //let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Movie")
         do {
             let result = try context.fetch(deleteFetch)
             for task in result as! [Task] {

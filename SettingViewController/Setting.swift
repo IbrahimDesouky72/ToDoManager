@@ -46,7 +46,7 @@ class Setting: UIViewController {
                     clearData()
                     
                 }else{
-                    print("exist")
+                    
                     errorLabel.isHidden = false
                     errorLabel.text = "Category is Exist"
                 }
@@ -88,7 +88,7 @@ class Setting: UIViewController {
             m = try managedContext.fetch(fetchRequest) as! [Category]
             if m.count > 0 {
                 result = true
-                print(m[0].categoryColor ?? "hello")
+                
             }
             
         }catch{
